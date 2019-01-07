@@ -1,0 +1,17 @@
+<package>
+  <description brief="Drivers for the SOLAR-2-45-2-RS232 inclinometer">
+  Package to configure and read the dual axis inclinometer SOLAR-2-45-RS232 with temperature compensation from leveldevelopements.
+  </description>
+  <author>Miro Voellmy/miro.voellmy@esa.int</author>
+  <license></license>
+  <url>http://</url>
+  <logo>http://</logo>
+  <depend package="base/cmake" />
+  <!--
+   To add any dependencies use the depend tag
+  <depend package="dummy-dependency-0" />
+	...
+  <depend package="dummy-dependency-n-1" />
+  <depend package="dummy-dependency-n" />
+  -->
+</package>
