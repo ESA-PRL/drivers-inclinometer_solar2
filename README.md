@@ -1,8 +1,19 @@
-inclino_solar2
+inclinometer_solar2
 =============
 Drivers for the SOLAR-2-30-2-RS232 inclinometer
 
 Package to configure and read the dual axis inclinometer SOLAR-2-45-RS232 with Temperature compensation from leveldevelopements.
+
+
+https://www.leveldevelopments.com/products/inclinometers/inclinometer-sensors/solar-2-45-2-rs232-dual-axis-inclinometer-45-rs232-interface-with-temperature-compensation/
+
+Configuration
+-------
+The sensor can be configured using and serial terminal like Teraterm, 
+[cutecom](http://cutecom.sourceforge.net/), etc.
+
+
+
 
 License
 -------
