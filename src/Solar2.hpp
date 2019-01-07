@@ -18,6 +18,7 @@ namespace solar2
         bool update();
     private:
         unsigned int rate_; // Transmission rate in ms [50-999ms]
+        static const unsigned int CASC_MSG_SIZE = 18;  // Number of bytes per message in streaming mode
         static const unsigned int MAX_PACKET_SIZE = 512; // Has to be >512
         
         virtual int extractPacket(uint8_t const* buffer, size_t buffer_size) const;
