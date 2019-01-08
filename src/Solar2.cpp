@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <string.h>
 
 #include "Solar2.hpp"
 
@@ -79,10 +80,14 @@ bool Solar2::update()
 
 bool Solar2::setRate(int rate)
 {
-	rate_ = rate_;
-	uint8_t buffer[8] = "str5000";
-	printf("%s\n", buffer);
-	writePacket(buffer, 7);
+	rate_ = rate;
+	// uint8_t buffer[8] = "str5000";
+	// uint8_t rate = rate;
+
+	// std::copy(&rate[0],&rate[3],&buffer[3]);
+
+	// printf("BUFFER: %s\n", buffer);
+	// writePacket(buffer, 7);
 	return 1;
 }
 

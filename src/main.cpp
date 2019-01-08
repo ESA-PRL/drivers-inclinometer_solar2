@@ -6,6 +6,11 @@ int main(int argc, char** argv)
 {
     solar2::Solar2 inclinometer(50);
 
+    int testint = 22;
+    uint8_t test8 = testint;
+
+    std::cout << unsigned(test8) << std::endl;
+
     std::string const port = "/dev/ttyUSB0";
 
     // TODO This error catcher doesn't seem to work...
