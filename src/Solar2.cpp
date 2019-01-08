@@ -41,7 +41,8 @@ bool Solar2::update()
 	
 	try
 	{	
-		readPacket(buffer, MAX_PACKET_SIZE, 2000, 2000);
+		// Timeout at 10s as this is is lowest transmission rate in streaming mode
+		readPacket(buffer, MAX_PACKET_SIZE, 10000, 10000);
 	
 		auto stop = std::chrono::high_resolution_clock::now(); 
 		auto duration = std::chrono::duration_cast<std::chrono::microseconds>((stop - start)/1000); 
@@ -76,6 +77,21 @@ bool Solar2::update()
 
 }
 
+bool Solar2::setRate(int rate)
+{
+	rate_ = rate_;
+	uint8_t buffer[8] = "str5000";
+	printf("%s\n", buffer);
+	writePacket(buffer, 7);
+	return 1;
+}
+
+
+bool writeMessage()
+{
+	printf("WriteMessage Function\n");
+	return 1;
+}
 
 // Virtual method, must be redefined to process custom packet
 int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const

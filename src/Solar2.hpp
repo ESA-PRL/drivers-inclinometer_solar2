@@ -16,7 +16,9 @@ namespace solar2
         ~Solar2();
 
         bool update();
+        bool setRate(int rate);
 
+        // Functions for orogen
         // int getFileDescriptor();
         // int getIndex();
 
@@ -27,6 +29,7 @@ namespace solar2
         mutable int removed_bytes;
         
         virtual int extractPacket(uint8_t const* buffer, size_t buffer_size) const;
+        bool writeMessage();
     };
 }
 
