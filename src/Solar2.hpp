@@ -16,13 +16,17 @@ namespace solar2
         ~Solar2();
 
         bool update();
+
+        // int getFileDescriptor();
+        // int getIndex();
+
     private:
         unsigned int rate_; // Transmission rate in ms [50-999ms]
         static const unsigned int CASC_MSG_SIZE = 18;  // Number of bytes per message in streaming mode
         static const unsigned int MAX_PACKET_SIZE = 512; // Has to be >512
+        mutable int removed_bytes;
         
         virtual int extractPacket(uint8_t const* buffer, size_t buffer_size) const;
-
     };
 }
 
