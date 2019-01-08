@@ -20,7 +20,7 @@ NICE TO HAVE
 
 0.0.1 (2019-01-08)
 ------------------
-* test sending commands
+* sending a test command to configure the sensor works
 * fixed timing issue and buffer parsing
 * parsing of serial readout implemented
 * readout of continuous serial communication works
