@@ -27,7 +27,12 @@ namespace solar2
         static const unsigned int CASC_MSG_SIZE = 18;  // Number of bytes per message in streaming mode
         static const unsigned int MAX_PACKET_SIZE = 512; // Has to be >512
         mutable int removed_bytes;
-        
+        mutable bool purge_buffer;
+
+        // Options
+        bool print_stream;
+        bool print_buffer;
+
         virtual int extractPacket(uint8_t const* buffer, size_t buffer_size) const;
         bool writeMessage();
     };
