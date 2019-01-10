@@ -4,7 +4,7 @@
 
 #include "Solar2.hpp"
 
-using namespace solar2;
+using namespace inclinometer_solar2;
 
 Solar2::Solar2():
 	Driver(512),
@@ -31,12 +31,12 @@ Solar2::~Solar2()
     }
 }
 
-// int Temperature::getFileDescriptor()
-// {
-//     return Driver::getFileDescriptor();
-// }
+int Solar2::getFileDescriptor()
+{
+    return Driver::getFileDescriptor();
+}
 
-bool Solar2::update()
+bool Solar2::update(float * inclinations)
 {
     uint8_t buffer[MAX_PACKET_SIZE];
 	
@@ -72,6 +72,11 @@ bool Solar2::update()
 
 			printf("\n");
 		}
+
+		float incs[2] = {1, 2};
+
+		// copy data to provided address
+		memcpy(inclinations, &incs, sizeof(incs));
 
 		return true;
 	}

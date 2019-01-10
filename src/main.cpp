@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 
     printf("Welcome to the inclinometer test software\n");
 
-    solar2::Solar2 inclinometer(50);
+    inclinometer_solar2::Solar2 inclinometer(50);
 
     std::string const port = "/dev/ttyUSB0";
 
@@ -26,12 +26,14 @@ int main(int argc, char** argv)
     printf("2. Change transmission rate.\n");
     scanf("%i", &action);
 
+    float inclinations[2];
+
     switch (action) {
 
         case 1:
             while(true)
             {
-            	inclinometer.update();    	
+            	inclinometer.update(inclinations);    	
             }
         
         case 2:
@@ -42,7 +44,7 @@ int main(int argc, char** argv)
             inclinometer.setRate(rate);
             while(true)
             {
-                inclinometer.update();      
+                inclinometer.update(inclinations);      
             }
     }
 

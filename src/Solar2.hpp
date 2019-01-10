@@ -5,7 +5,7 @@
 
 // Use cutecom for Ubuntu Console
 
-namespace solar2
+namespace inclinometer_solar2
 {
     class Solar2: public iodrivers_base::Driver
     {
@@ -15,11 +15,11 @@ namespace solar2
         Solar2(unsigned int rate);
         ~Solar2();
 
-        bool update();
+        bool update(float * inclinations);
         bool setRate(int rate);
 
-        // Functions for orogen
-        // int getFileDescriptor();
+        // Functions for fd-driven tasks
+        int getFileDescriptor();
         // int getIndex();
 
     private:
