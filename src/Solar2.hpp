@@ -35,6 +35,10 @@ namespace inclinometer_solar2
 
         virtual int extractPacket(uint8_t const* buffer, size_t buffer_size) const;
         bool writeMessage();
+
+        // Helper functions
+        float ui8tof(uint8_t *input);
+
     };
 }
 

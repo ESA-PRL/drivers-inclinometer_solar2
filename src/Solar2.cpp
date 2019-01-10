@@ -38,14 +38,14 @@ int Solar2::getFileDescriptor()
 
 bool Solar2::update(float * inclinations)
 {
-    uint8_t buffer[MAX_PACKET_SIZE];
+    uint8_t packet[MAX_PACKET_SIZE];
 	
 	auto start = std::chrono::high_resolution_clock::now(); 
 	
 	try
 	{	
 		// Timeout at 10s as this is is lowest transmission rate in streaming mode
-		readPacket(buffer, MAX_PACKET_SIZE, 10000, 10000);
+		readPacket(packet, MAX_PACKET_SIZE, 10000, 10000);
 	
 		if (print_stream)
 		{
@@ -66,17 +66,31 @@ bool Solar2::update(float * inclinations)
 			// find \r and replace with readable \r
 			for (int j = 0; j < 18; j++)
 			{
-				if (buffer[j] == '\r')	std::cout << "\\r";
-				else std::cout << buffer[j];
+				if (packet[j] == '\r')	std::cout << "\\r";
+				else std::cout << packet[j];
 			}
 
 			printf("\n");
 		}
 
-		float incs[2] = {1, 2};
+		
+		// TODO: implement full check to see what message it is.
+		// Parse the message into a float array if the message does not contain an OK.		
+		if(packet[0] != 'O' && packet[1] != 'K'){
 
-		// copy data to provided address
-		memcpy(inclinations, &incs, sizeof(incs));
+			// Extract the x & y values from the message packet. 
+		 	uint8_t x[9];
+		    uint8_t y[9];
+
+		    std::copy(packet, packet + 9, x);
+		    std::copy(packet + 10, packet + 18, y);
+
+		    // Parse the uint8_t arrays into a a float array containing x & y.
+			float incs[2] = {ui8tof(x), ui8tof(y)};
+
+			// Copy data to provided address
+			memcpy(inclinations, &incs, sizeof(incs));
+		}
 
 		return true;
 	}
@@ -105,12 +119,6 @@ bool Solar2::setRate(int rate)
 
 		purge_buffer = true;
 		writePacket(buffer, 7);
-
-		// // Read Response
-		// uint8_t response[MAX_PACKET_SIZE];
-		// readPacket(response, MAX_PACKET_SIZE, 1000, 1000);
-
-		// printf("RESPONSE:\n", response);
 
 		rate_ = rate;
 		return 1;
@@ -146,7 +154,7 @@ int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 
 		purge_buffer = false;
 
-		printf("\t\t\t\t\t\t\t\t%lu elements removed from buffer.\n", buffer_size);
+		printf("\t\t\t\t\t\t\t\t%lu Elements removed from buffer.\n", buffer_size);
 		return -buffer_size;
 	}
 
@@ -183,4 +191,11 @@ int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 
 	// Remove one byte at beginning of the device buffer 
 	return -1;
+}
+
+
+float Solar2::ui8tof(uint8_t *input) {
+    std::string s;
+    s.assign(input, input + sizeof(input));
+    return std::stof(s);
 }

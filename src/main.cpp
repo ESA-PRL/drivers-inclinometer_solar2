@@ -1,6 +1,13 @@
 #include <iostream>
+#include <cstring>
 #include "Solar2.hpp"
 #include <chrono>
+
+float ui8tof(uint8_t *input) {
+    std::string s;
+    s.assign(input, input + sizeof(input));
+    return std::stof(s);
+}
 
 int main(int argc, char** argv)
 {
@@ -33,7 +40,7 @@ int main(int argc, char** argv)
         case 1:
             while(true)
             {
-            	inclinometer.update(inclinations);    	
+            	inclinometer.update(inclinations);
             }
         
         case 2:
