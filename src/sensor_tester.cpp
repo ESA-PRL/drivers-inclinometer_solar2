@@ -34,6 +34,8 @@ int main(int argc, char** argv)
         printf("1. Display data to terminal.\n");
         printf("2. Change transmission rate.\n");
         printf("3. Send string command (works only for 'OK' responses atm).\n");
+        printf("-----------------------------------------\n");
+        
         scanf("%i", &action);
 
 

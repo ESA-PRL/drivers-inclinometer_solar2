@@ -2,8 +2,7 @@ inclinometer_solar2
 =============
 Package to configure and read the dual axis inclinometer SOLAR-2-45-RS232 with Temperature compensation from leveldevelopements.
 
-
-https://www.leveldevelopments.com/products/inclinometers/inclinometer-sensors/solar-2-45-2-rs232-dual-axis-inclinometer-45-rs232-interface-with-temperature-compensation/
+[LINK](https://www.leveldevelopments.com/products/inclinometers/inclinometer-sensors/solar-2-45-2-rs232-dual-axis-inclinometer-45-rs232-interface-with-temperature-compensation/)
 
 Configuration
 -------------
