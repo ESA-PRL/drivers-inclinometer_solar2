@@ -18,6 +18,7 @@ Test the sensor by building the sensor_tester:
 ```amake```
 
 and then running it:
+<<<<<<< HEAD
 
 ```./build/src/sensor_tester```
 
@@ -27,6 +28,14 @@ The orogen component can be tested by building it:
 
 and then running the following ruby script>
 
+=======
+```./build/src/sensor_tester```
+
+The orogen component can be tested by building it:
+```amake ../orogen/inclinometer_solar2```
+
+and then running the following ruby script>
+>>>>>>> origin/master
 ```ruby ../orogen/inclinometer_solar2/scripts/start.rb```
 
 
