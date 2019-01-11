@@ -7,7 +7,9 @@ https://www.leveldevelopments.com/products/inclinometers/inclinometer-sensors/so
 
 Configuration
 -------------
-The sensor can be configured using and serial terminal like Teraterm, 
+It is possible to configure the sensor using the configuration software on Windows found [here](https://www.leveldevelopments.com/wp/wp-content/uploads/software/Inclinometer_App.zip).
+
+The sensor can also be configured using any serial terminal like Teraterm, 
 [cutecom](http://cutecom.sourceforge.net/), etc.
 
 
