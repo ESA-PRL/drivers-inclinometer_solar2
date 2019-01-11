@@ -30,7 +30,7 @@ and then running the following ruby script>
 
 ```./build/src/sensor_tester```
 
-
+<!-- 
 License
 -------
 dummy-license
@@ -73,3 +73,4 @@ install setup properly.
 | configuration/    | Configuration files for running the program                          |
 | external/         | When including software that needs a non standard installation process, or one that can be easily embedded include the external software directly here |
 | doc/              | should contain the existing doxygen file: doxygen.conf               |
+ -->
