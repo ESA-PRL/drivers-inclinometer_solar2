@@ -3,7 +3,7 @@ rock_library(inclinometer_solar2
     HEADERS Solar2.hpp
     DEPS_PKGCONFIG iodrivers_base)
 
-rock_executable(inclinometer_solar2_bin main.cpp
+rock_executable(sensor_tester sensor_tester.cpp
     DEPS inclinometer_solar2
     DEPS_PKGCONFIG iodrivers_base)
 
