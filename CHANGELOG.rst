@@ -4,11 +4,10 @@ Changelog for inclinometer_solar2 package
 
 TODO
 ------------------
-* turn off continuous transmission to change settings
-  OR
-  use threads for reading and writing
-* add methods to adjust parameters of sensor
 * implement full check to see what message arrives in buffer.
+* implement logger
+* implement different responses than OK in sendCmd()
+* add purge method
 
 KNOWN BUGS
 ------------------
@@ -16,12 +15,14 @@ KNOWN BUGS
 
 NICE TO HAVE
 ------------------
-* convert the input int into uint8_t
-* configuration of sensor at class initialization
+* Online configuration and zeroing
 
 
 0.1 (2019-01-08)
 ------------------
+* rate was removed from initialization as it can anyway only be changed after the serial port was started
+* added methods to adjust parameters of sensor
+* turns off continuous transmission to change settings
 * parses sensor values to port
 * test script start.rb works
 * filled update hook and configuration hook

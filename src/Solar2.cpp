@@ -7,20 +7,10 @@
 using namespace inclinometer_solar2;
 
 Solar2::Solar2():
-	Driver(512),
-	rate_(9999)
+	Driver(MAX_PACKET_SIZE)
 {
-	removed_bytes = 0;
 }
 
-Solar2::Solar2(unsigned int rate):
-	Driver(512),
-	rate_(rate)
-{
-	removed_bytes = 0;
-	print_stream = false;
-	print_buffer = false;
-}
 
 Solar2::~Solar2()
 {
@@ -73,7 +63,6 @@ bool Solar2::update(float * inclinations)
 			printf("\n");
 		}
 
-		
 		// TODO: implement full check to see what message it is.
 		// Parse the message into a float array if the message does not contain an OK.		
 		if(packet[0] != 'O' && packet[1] != 'K'){
@@ -103,35 +92,85 @@ bool Solar2::update(float * inclinations)
 
 }
 
+
+bool Solar2::sendMsg(uint8_t *message, bool expect_ok, uint8_t *response)
+{
+	int count = 0;
+    uint8_t packet[MAX_PACKET_SIZE];
+
+	writePacket(message, sizeof(message)/sizeof(message[0])-1);
+	if(expect_ok)
+	{
+		while (count < 100) {
+			readPacket(packet, MAX_PACKET_SIZE, 2*rate_, 2*rate_);
+			if(packet[0] == 'O' && packet[1] == 'K') return true;
+
+			count++;
+		}
+		printf("ERROR: No response received!\n");
+	}
+	else
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool Solar2::sendCmd(std::string command, bool expect_ok, uint8_t *response)
+{
+	if(!sendMsg(strtoui8t("stpcasc"), true))
+	{	
+		printf("ERROR: Couldn't stop the stream.\n");
+		return false;
+	}
+
+	if(!sendMsg(strtoui8t(command), 	expect_ok))
+	{	
+		printf("ERROR: Couldn't send the command.\n");
+		return false;
+	}
+
+	if(!sendMsg(strtoui8t("setcasc"),false))
+	{	
+		printf("ERROR: Couldn't start the stream.\n");
+		return false;
+	}
+
+	return true;
+}
+
+
 // Early testing function for commands.
 bool Solar2::setRate(int rate)
 {
-	if (rate >= 50 || rate <= 9999)
+	if (rate >= 50 && rate <= 9999)
 	{
 
-		// Assign rate to new_rate
-		uint8_t buffer[8] = "str0000";
-		uint8_t new_rate[5] = "0050"; // new_rate is added to message
-
-		std::copy(&new_rate[0],&new_rate[3],&buffer[3]);
-
-		printf("Rate set to: %s [ms]\n", new_rate);
-
-		purge_buffer = true;
-		writePacket(buffer, 7);
-
+		// Build message
 		rate_ = rate;
-		return 1;
+		std::string rate_message = "str";
+
+		for (int i=0; i<(4-nrOfDigits(rate)); i++) rate_message.append("0");
+
+		rate_message.append(std::to_string(rate));
+
+
+		if(sendCmd(rate_message,true))
+		{
+			printf("Rate successfully changed to %i ms.\n", rate);
+			return true;
+		}
+
 	}
-	return 0;
+	else
+	{
+		printf("ERROR: chosen rate out of bounds.\n");
+	}
+
+	return false;
 }
 
-
-bool writeMessage()
-{
-	printf("WriteMessage Function\n");
-	return 1;
-}
 
 // Virtual method, must be redefined to process custom packet
 int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
@@ -150,8 +189,6 @@ int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 	}
 	
 	if(purge_buffer){
-	// if(buffer_size > 2*CASC_MSG_SIZE){
-
 		purge_buffer = false;
 
 		printf("\t\t\t\t\t\t\t\t%lu Elements removed from buffer.\n", buffer_size);
@@ -159,7 +196,7 @@ int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 	}
 
 
-	if(buffer[0] == 'O' && buffer[1] == 'K')
+	if(buffer[0] == 'O' && buffer[1] == 'K' && buffer_size >= 2)
 	{	
 		printf("\t\t\t\t\t\t\t\tReceived OK from sensor.\n");
 		return 2;
@@ -198,4 +235,20 @@ float Solar2::ui8tof(uint8_t *input) {
     std::string s;
     s.assign(input, input + sizeof(input));
     return std::stof(s);
+}
+
+uint8_t* Solar2::strtoui8t(std::string input) {
+
+    uint8_t* output;
+    output = new uint8_t[input.length() + 1];
+    memcpy(output, input.c_str(), input.length() + 1);
+    return output;
+}
+
+int Solar2::nrOfDigits(int input){
+
+	int length = 1;
+	while ( input /= 10 )
+	   length++;
+	return length;
 }
