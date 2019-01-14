@@ -8,6 +8,7 @@ TODO
 * implement logger
 * implement different responses than OK in sendCmd()
 * add purge method
+* change output to RADs
 
 KNOWN BUGS
 ------------------
