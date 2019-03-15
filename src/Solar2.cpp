@@ -69,12 +69,12 @@ bool Solar2::update(float * inclinations)
 
 			// Extract the x & y values from the message packet.
 		 	uint8_t x[9];
-		    uint8_t y[9];
+	    uint8_t y[9];
 
-		    std::copy(packet, packet + 9, x);
-		    std::copy(packet + 10, packet + 18, y);
+	    std::copy(packet, packet + 8, x);
+	    std::copy(packet + 9, packet + 18, y);
 
-		    // Parse the uint8_t arrays into a a float array containing x & y.
+	    // Parse the uint8_t arrays into a a float array containing x & y.
 			float incs[2] = {ui8tof(x), ui8tof(y)};
 
 			// Copy data to provided address
@@ -158,7 +158,7 @@ bool Solar2::setRate(int rate)
 
 		if(sendCmd(rate_message,true))
 		{
-			printf("Rate successfully changed to %i ms.\n", rate);
+			printf("Rate successfully set to %i ms.\n", rate);
 			return true;
 		}
 
@@ -198,7 +198,7 @@ int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 
 	if(buffer[0] == 'O' && buffer[1] == 'K' && buffer_size >= 2)
 	{
-		printf("\t\t\t\t\t\t\t\tReceived OK from sensor.\n");
+		// printf("\t\t\t\t\t\t\t\tReceived OK from sensor.\n");
 		return 2;
 	}
 
