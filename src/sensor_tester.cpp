@@ -16,7 +16,7 @@ int main(int argc, char** argv)
 
     inclinometer_solar2::Solar2 inclinometer;
 
-    std::string const port = "/dev/ttyUSB0";
+    std::string const port = "/dev/ttyS1";
 
     // TODO This error catcher doesn't seem to work...
     if(!inclinometer.openSerial(port, 38400))

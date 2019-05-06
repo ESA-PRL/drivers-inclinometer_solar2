@@ -29,29 +29,29 @@ int Solar2::getFileDescriptor()
 bool Solar2::update(float * inclinations)
 {
     uint8_t packet[MAX_PACKET_SIZE];
-	
-	auto start = std::chrono::high_resolution_clock::now(); 
-	
+
+	auto start = std::chrono::high_resolution_clock::now();
+
 	try
-	{	
+	{
 		// Timeout at 10s as this is is lowest transmission rate in streaming mode
 		readPacket(packet, MAX_PACKET_SIZE, 10000, 10000);
-	
+
 		if (print_stream)
 		{
 
-			auto stop = std::chrono::high_resolution_clock::now(); 
-			auto duration = std::chrono::duration_cast<std::chrono::microseconds>((stop - start)/1000); 
+			auto stop = std::chrono::high_resolution_clock::now();
+			auto duration = std::chrono::duration_cast<std::chrono::microseconds>((stop - start)/1000);
 
 			// PRINT TIME
-			// To get the value of duration use the count() 
-			// member function on the duration object 
+			// To get the value of duration use the count()
+			// member function on the duration object
 			printf("--------------\n");
 			printf("Elapsed: %ld ms\n", duration.count());
 
 
 			// PRINT MESSAGE
-			printf("Received Message: ");
+			printf("Received Message [°]: ");
 
 			// find \r and replace with readable \r
 			for (int j = 0; j < 18; j++)
@@ -64,17 +64,17 @@ bool Solar2::update(float * inclinations)
 		}
 
 		// TODO: implement full check to see what message it is.
-		// Parse the message into a float array if the message does not contain an OK.		
+		// Parse the message into a float array if the message does not contain an OK.
 		if(packet[0] != 'O' && packet[1] != 'K'){
 
-			// Extract the x & y values from the message packet. 
+			// Extract the x & y values from the message packet.
 		 	uint8_t x[9];
-		    uint8_t y[9];
+	    uint8_t y[9];
 
-		    std::copy(packet, packet + 9, x);
-		    std::copy(packet + 10, packet + 18, y);
+	    std::copy(packet, packet + 8, x);
+	    std::copy(packet + 9, packet + 18, y);
 
-		    // Parse the uint8_t arrays into a a float array containing x & y.
+	    // Parse the uint8_t arrays into a a float array containing x & y.
 			float incs[2] = {ui8tof(x), ui8tof(y)};
 
 			// Copy data to provided address
@@ -120,19 +120,19 @@ bool Solar2::sendMsg(uint8_t *message, bool expect_ok, uint8_t *response)
 bool Solar2::sendCmd(std::string command, bool expect_ok, uint8_t *response)
 {
 	if(!sendMsg(strtoui8t("stpcasc"), true))
-	{	
+	{
 		printf("ERROR: Couldn't stop the stream.\n");
 		return false;
 	}
 
 	if(!sendMsg(strtoui8t(command), 	expect_ok))
-	{	
+	{
 		printf("ERROR: Couldn't send the command.\n");
 		return false;
 	}
 
 	if(!sendMsg(strtoui8t("setcasc"),false))
-	{	
+	{
 		printf("ERROR: Couldn't start the stream.\n");
 		return false;
 	}
@@ -158,7 +158,7 @@ bool Solar2::setRate(int rate)
 
 		if(sendCmd(rate_message,true))
 		{
-			printf("Rate successfully changed to %i ms.\n", rate);
+			printf("Rate successfully set to %i ms.\n", rate);
 			return true;
 		}
 
@@ -175,11 +175,11 @@ bool Solar2::setRate(int rate)
 // Virtual method, must be redefined to process custom packet
 int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 {
-	
+
 	if(print_buffer)
 	{
 		printf("BS:\t%lu \n", buffer_size);
-		printf("BF:\t\t");	
+		printf("BF:\t\t");
 		for (uint j = 0; j < buffer_size; j++)
 		{
 			if (buffer[j] == '\r')	std::cout << "\\r";
@@ -187,7 +187,7 @@ int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 		}
 		printf("\n");
 	}
-	
+
 	if(purge_buffer){
 		purge_buffer = false;
 
@@ -197,8 +197,8 @@ int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 
 
 	if(buffer[0] == 'O' && buffer[1] == 'K' && buffer_size >= 2)
-	{	
-		printf("\t\t\t\t\t\t\t\tReceived OK from sensor.\n");
+	{
+		// printf("\t\t\t\t\t\t\t\tReceived OK from sensor.\n");
 		return 2;
 	}
 
@@ -215,7 +215,7 @@ int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 	{
 		if (print_stream)
 		{
-						
+
 			// PRINT LOST BYTES
 			printf("Discarded Bytes: %d\n", removed_bytes);
 			removed_bytes = 0;
@@ -226,7 +226,7 @@ int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 
 	removed_bytes = removed_bytes + 1;
 
-	// Remove one byte at beginning of the device buffer 
+	// Remove one byte at beginning of the device buffer
 	return -1;
 }
 
