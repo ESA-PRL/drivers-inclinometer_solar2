@@ -9,6 +9,7 @@ TODO
 * implement different responses than OK in sendCmd()
 * add purge method
 * change output to RADs
+* change output to IMU message
 
 KNOWN BUGS
 ------------------
