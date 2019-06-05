@@ -34,7 +34,7 @@ bool Solar2::update(float * inclinations)
 
 	try
 	{
-		// Timeout at 10s as this is is lowest transmission rate in streaming mode
+		// Timeout at 10s as this is the lowest transmission rate in streaming mode
 		readPacket(packet, MAX_PACKET_SIZE, 10000, 10000);
 
 		if (print_stream)
@@ -76,7 +76,6 @@ bool Solar2::update(float * inclinations)
 
 	    // Parse the uint8_t arrays into a a float array containing x & y.
 			float incs[2] = {ui8tof(x), ui8tof(y)};
-
 			// Copy data to provided address
 			memcpy(inclinations, &incs, sizeof(incs));
 		}
@@ -175,7 +174,6 @@ bool Solar2::setRate(int rate)
 // Virtual method, must be redefined to process custom packet
 int Solar2::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 {
-
 	if(print_buffer)
 	{
 		printf("BS:\t%lu \n", buffer_size);

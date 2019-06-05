@@ -30,8 +30,8 @@ namespace inclinometer_solar2
 
     private:
         static const unsigned int CASC_MSG_SIZE = 18;  // Number of bytes per message in streaming mode
-        static const unsigned int MAX_PACKET_SIZE = 512; // Has to be >512
-        mutable int removed_bytes = 0; // Number bytes that were removed during
+        static const unsigned int MAX_PACKET_SIZE = 512;
+        mutable int removed_bytes = 0; // Number of bytes that are removed from the start of the buffer in case it is larger than the streamed msg (len=18). They are removed until a complete msg is discovered.
         mutable bool purge_buffer = false;
         int rate_;
 
