@@ -2,6 +2,7 @@
 #define _SOLAR2_HPP_
 
 #include <iodrivers_base/Driver.hpp>
+#include <math.h>
 
 // Use cutecom for Ubuntu Console
 
@@ -15,7 +16,7 @@ namespace inclinometer_solar2
         ~Solar2();
 
         bool update(float * inclinations);
-        void activatePrinting() {print_stream = false;}
+        void activatePrinting() {print_stream = true;}
         bool setRate(int rate);
         // Sends a command using sendMsg() but deactivates the streaming first and activates the streaming afterwards again.
         // set expect_ok to true if the response should be an ok and otherwise provide the location of the response.
@@ -47,6 +48,7 @@ namespace inclinometer_solar2
         float ui8tof(uint8_t *input);   // parses a uint8_t ascii array into a float.
         uint8_t* strtoui8t(std::string input);
         int nrOfDigits(int input);
+        float *toEuler(float *inclinations);
 
     };
 }
